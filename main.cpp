@@ -2,26 +2,56 @@
 
 int main()
 {
-    HashFile data_base("customers.txt", 7);
+    try
+    {
+        // Address space of length 7
+        HashFile hash("customers.fle", 7); 
 
-    unsigned long id = 20,
-        bob_id = 10,
-        mike_id = 5;
-    char* name = new char[]{ "Arkadiy" },
-        *bob_name = new char[] {"Bob"},
-        *mike_name = new char[] {"Mike"};
-    
+    	// Inserting the data
+        std::cout << "\nInsert: \n";
+        HashEntry kde(3UL, (char*)"Vivi");
+        hash.insert(kde);
+        kde.setID(10L); kde.setName((char*)"Peter");
+        hash.insert(kde);
+        kde.setID(17L); kde.setName((char*)"Alexa");
+        hash.insert(kde);
+        kde.setID(21L); kde.setName((char*)"Peter");
+        hash.insert(kde);
+        kde.setID(15L); kde.setName((char*)"Jeany");
+        hash.insert(kde);
+    	std::cout << "\nInsertion complete: \n";
 
-    HashEntry Arkadiy(id, name);
-    HashEntry Bob(bob_id, bob_name);
-    HashEntry Mike(mike_id, mike_name);
+        // Displaying data base
+    	hash.display();
 
-    data_base.insert(Arkadiy);
-    data_base.insert(Bob);
-    data_base.insert(Mike);
+		// Testing Retreive method
+    	unsigned long key;
+        std::cout << "Key? "; std::cin >> key;
+        HashEntry* temp = hash.retrieve(key);
+        if (temp->getID() != 0L)
+            temp->display();
+        else
+            std::cout << "Key " << key
+            << " not found\n";
+    }
+    catch (OpenError& err)
+    {
+        std::cerr << "Error in opening the file:"
+            << err.getName() << '\n';
+        exit(1);
+    }
+    catch (WriteError& err)
+    {
+        std::cerr << "Error writing to file: "
+            << err.getName() << '\n';
+        exit(1);
+    }
+    catch (ReadError& err)
+    {
+        std::cerr << "Error reading from file: "
+            << err.getName() << '\n';
+        exit(1);
+    }
 
-    HashEntry* BobFromBase = data_base.retrieve(bob_id);
-    HashEntry* Fake19 = data_base.retrieve(19UL);
-    HashEntry* Fake3 = data_base.retrieve(3UL);
-    HashEntry* Fake5 = data_base.retrieve(5UL);
+    return 0;
 }

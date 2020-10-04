@@ -8,14 +8,19 @@ private:
 	std::string file_name;
 
 	// Bias
-	int b;
+	unsigned long b;
 
-	int Hash(int);
+protected:
+	unsigned long Hash(unsigned long key) const;
 
 public:
-	HashFile(std::string, int);
+	HashFile(std::string, unsigned long) 
+		throw(OpenError, WriteError);
 	~HashFile();
-	void insert(HashEntry&);
-	HashEntry* retrieve(int);
+	void insert(HashEntry&) 
+		throw(ReadError, WriteError);
+	HashEntry* retrieve(unsigned long)
+		throw(ReadError);
+	void display();
 };
 
