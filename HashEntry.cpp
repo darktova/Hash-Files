@@ -15,10 +15,14 @@ char* HashEntry::getName() const
 
 void HashEntry::read_at(std::fstream& file, long pos)
 {
-
+	file.seekp(pos);
+	file.read((char*)&id, sizeof(id));
+	file.read((char*)&name, sizeof(name));
 }
 
 void HashEntry::write_at(std::fstream& file, long pos)
 {
-
+	file.seekp(pos);
+	file.write((char*)&id, sizeof(id));
+	file.write((char*)&name, sizeof(name));
 }

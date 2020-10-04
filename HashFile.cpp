@@ -1,5 +1,7 @@
 #include "HashFile.h"
 
+/* Transforms (int.) key into value
+ * between 0 and b-1 */
 int HashFile::Hash(int key)
 {
     /* Example
@@ -14,7 +16,7 @@ HashFile::HashFile(std::string file_name, int b)
     if (!this->file_name.size())
         return;
 
-    file.open(file_name, std::ios::in | std::ios::in);
+    file.open(file_name, std::ios::in | std::ios::out);
 
     if (!file.good())
         return;
@@ -29,8 +31,11 @@ void HashFile::insert(HashEntry& e)
 {
     file.clear();
 
+    // Searching the entry' position
     unsigned int entrySize = sizeof(HashEntry),
         steps = Hash(e.getID());
+
+    // Inserting entry
     e.write_at(file, entrySize * steps);
 }
 
@@ -38,12 +43,13 @@ HashEntry* HashFile::retrieve(int key)
 {
     file.clear();
 
-    HashEntry e;
+    HashEntry* e = new HashEntry();
     unsigned int entrySize = sizeof(HashEntry),
         steps = Hash(key);
 
     if (!file)
-        return;
+        return nullptr;
 
-    e.read_at(file, entrySize * steps);
+    e->read_at(file, entrySize * steps);
+    return e;
 }

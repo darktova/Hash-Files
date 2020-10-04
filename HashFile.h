@@ -1,5 +1,4 @@
 #pragma once
-#include <fstream>
 #include "HashEntry.h"
 
 class HashFile
@@ -7,10 +6,10 @@ class HashFile
 private:
 	std::fstream file;
 	std::string file_name;
+
+	// Bias
 	int b;
 
-	/* Transforms (int.) key into value
-	* between 0 and b-1 */
 	int Hash(int);
 
 public:
